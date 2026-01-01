@@ -2,6 +2,9 @@ import express from "express";
 import { config } from "./config/app.config";
 import { loggerMiddleware } from "./middlewares/loggerMiddleware";
 import departmentRoutes from "./routes/departmentRoute";
+import studentRoutes from "./routes/studentRoute";
+import courseRoutes from "./routes/courseRoute";
+import enrollmentRoutes from "./routes/enrollmentRoute";
 
 const app = express();
 
@@ -10,8 +13,10 @@ app.use(express.json());
 app.use(loggerMiddleware);
 
 // Routes
-app.use("/api/departments", departmentRoutes);
-
+app.use("/departments", departmentRoutes);
+app.use("/students", studentRoutes);
+app.use("/courses", courseRoutes);
+app.use("/enrollments", enrollmentRoutes);
 // Root route
 app.get("/", (req, res) => {
     res.send("Welcome to Student Management API");
@@ -20,7 +25,7 @@ app.get("/", (req, res) => {
 const PORT = config.port;
 
 app.listen(Number(PORT), "0.0.0.0", () => {
-    console.log(`Server is running on port ${PORT}`);
-    console.log('DB:', process.env.DATABASE_URL)
+    console.log(`http://localhost:${PORT}`);
+    console.log(`${config.appName} is running on port ${PORT}`)
 
 });

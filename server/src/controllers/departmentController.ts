@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
-
-
 import prisma from '../config/prisma'
+
+
+
+
+
 
 export const getDepartments = async (req: Request, res: Response) => {
     try {
@@ -13,12 +16,18 @@ export const getDepartments = async (req: Request, res: Response) => {
         });
         res.status(200).json(departments);
     } catch (error) {
-        res.status(500).json({ error: "Failed to fetch departments" });
+        res.status(500).json({ error: "Failed to connect to database" });
     }
 };
 
+
+
+
+
 export const getDepartmentById = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id } = req.params; //Destructuring
+
+
     try {
         const department = await prisma.department.findUnique({
             where: { id: parseInt(id) },
@@ -33,9 +42,12 @@ export const getDepartmentById = async (req: Request, res: Response) => {
         }
         res.status(200).json(department);
     } catch (error) {
-        res.status(500).json({ error: "Failed to fetch department" });
+        res.status(500).json({ error: "Failed to connect to database" });
     }
 };
+
+
+
 
 export const createDepartment = async (req: Request, res: Response) => {
     const { name } = req.body;
@@ -43,11 +55,15 @@ export const createDepartment = async (req: Request, res: Response) => {
         const newDepartment = await prisma.department.create({
             data: { name },
         });
-        res.status(201).json(newDepartment);
+        res.status(201).json({newDepartment,
+            message: "Department created successfully"
+        });
     } catch (error) {
         res.status(500).json({ error: "Failed to create department" });
     }
 };
+
+
 
 export const updateDepartment = async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -69,7 +85,7 @@ export const deleteDepartment = async (req: Request, res: Response) => {
         await prisma.department.delete({
             where: { id: parseInt(id) },
         });
-        res.status(204).send();
+        res.status(204).send({message: "Department deleted successfully"});
     } catch (error) {
         res.status(500).json({ error: "Failed to delete department" });
     }
