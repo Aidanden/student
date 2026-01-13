@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { config } from "./config/app.config";
 import { loggerMiddleware } from "./middlewares/loggerMiddleware";
 import departmentRoutes from "./routes/departmentRoute";
@@ -9,6 +10,7 @@ import enrollmentRoutes from "./routes/enrollmentRoute";
 const app = express();
 
 // Middlewares
+app.use(cors());
 app.use(express.json());
 app.use(loggerMiddleware);
 
